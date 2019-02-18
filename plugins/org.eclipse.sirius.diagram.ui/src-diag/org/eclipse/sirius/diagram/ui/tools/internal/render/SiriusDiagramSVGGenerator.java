@@ -28,6 +28,8 @@ import javax.xml.transform.stream.StreamResult;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.gmf.runtime.common.core.util.Log;
 import org.eclipse.gmf.runtime.common.core.util.Trace;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.DiagramEditPart;
@@ -40,6 +42,8 @@ import org.eclipse.gmf.runtime.draw2d.ui.render.awt.internal.image.ImageConverte
 import org.eclipse.gmf.runtime.draw2d.ui.render.factory.RenderedImageFactory;
 import org.eclipse.gmf.runtime.draw2d.ui.render.internal.RenderedImageDescriptor;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.sirius.diagram.DSemanticDiagram;
+import org.eclipse.sirius.diagram.description.DescriptionPackage;
 import org.w3c.dom.Element;
 
 /**
@@ -130,6 +134,8 @@ public class SiriusDiagramSVGGenerator extends DiagramGenerator {
                             String.valueOf(viewBox.y) + " " + //$NON-NLS-1$
                             String.valueOf(viewBox.width) + " " + //$NON-NLS-1$
                             String.valueOf(viewBox.height));
+            EObject semanticRoot = ((DSemanticDiagram) getDiagramEditPart().resolveSemanticElement()).getTarget();
+            svgRoot.setAttributeNS(DescriptionPackage.eNS_URI, "semanticRoot", EcoreUtil.getURI(semanticRoot).toString()); //$NON-NLS-1$
 
             // Write the document to the stream
             Transformer transformer = TransformerFactory.newInstance().newTransformer();
