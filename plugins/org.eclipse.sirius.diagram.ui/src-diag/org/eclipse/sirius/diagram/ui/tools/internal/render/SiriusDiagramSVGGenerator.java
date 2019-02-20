@@ -17,7 +17,10 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
@@ -27,12 +30,17 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.draw2d.Graphics;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.gef.ConnectionEditPart;
+import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gmf.runtime.common.core.util.Log;
 import org.eclipse.gmf.runtime.common.core.util.Trace;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.DiagramEditPart;
+import org.eclipse.gmf.runtime.diagram.ui.editparts.IGraphicalEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.l10n.SharedImages;
 import org.eclipse.gmf.runtime.diagram.ui.render.clipboard.DiagramGenerator;
 import org.eclipse.gmf.runtime.diagram.ui.render.internal.DiagramUIRenderDebugOptions;
@@ -41,9 +49,12 @@ import org.eclipse.gmf.runtime.draw2d.ui.render.RenderedImage;
 import org.eclipse.gmf.runtime.draw2d.ui.render.awt.internal.image.ImageConverter;
 import org.eclipse.gmf.runtime.draw2d.ui.render.factory.RenderedImageFactory;
 import org.eclipse.gmf.runtime.draw2d.ui.render.internal.RenderedImageDescriptor;
+import org.eclipse.gmf.runtime.draw2d.ui.render.internal.graphics.RenderedMapModeGraphics;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.sirius.diagram.DSemanticDiagram;
 import org.eclipse.sirius.diagram.description.DescriptionPackage;
+import org.eclipse.sirius.common.tools.api.util.ReflectionHelper;
+import org.eclipse.sirius.viewpoint.DSemanticDecorator;
 import org.w3c.dom.Element;
 
 /**
@@ -184,6 +195,63 @@ public class SiriusDiagramSVGGenerator extends DiagramGenerator {
         return ImageConverter.convert(SharedImages.get(SharedImages.IMG_ERROR));
     }
 
+
+    @Override
+    protected void renderToGraphics(Graphics graphics,
+            Point translateOffset, List editparts) {
+
+//      List sortedEditparts = sortSelection(editparts);
+
+        graphics.translate((-translateOffset.x), (-translateOffset.y));
+        graphics.pushState();
+
+        List<GraphicalEditPart> connectionsToPaint = new LinkedList<GraphicalEditPart>();
+
+        Map decorations = findDecorations(editparts);
+
+        for (Iterator editPartsItr = editparts.listIterator(); editPartsItr.hasNext();) {
+            IGraphicalEditPart editPart = (IGraphicalEditPart) editPartsItr.next();
+
+            // do not paint selected connection part
+            if (editPart instanceof ConnectionEditPart) {
+                connectionsToPaint.add(editPart);
+            } else {                
+                connectionsToPaint.addAll(findConnectionsToPaint(editPart));
+                // paint shape figure
+                IFigure figure = editPart.getFigure();
+                setCurrentId(graphics, editPart);
+                paintFigure(graphics, figure);
+
+                paintDecorations(graphics, figure, decorations);
+            }
+        }
+        
+        // paint the connection parts after shape parts paint
+        decorations = findDecorations(connectionsToPaint);
+
+        for (Iterator<GraphicalEditPart> connItr = connectionsToPaint.iterator(); connItr.hasNext();) {
+            GraphicalEditPart conn = connItr.next();
+            setCurrentId(graphics, conn);
+            IFigure figure = conn.getFigure();
+            paintFigure(graphics, figure);
+            paintDecorations(graphics, figure, decorations);
+        }
+    }
+    
+    private void setCurrentId(Graphics gfx, GraphicalEditPart part) {
+        if (gfx instanceof RenderedMapModeGraphics) {
+            gfx = (Graphics) ReflectionHelper.getFieldValueWithoutException(gfx, "graphics").get(); //$NON-NLS-1$
+        }
+        if (gfx instanceof SiriusGraphicsSVG && part instanceof org.eclipse.gmf.runtime.diagram.ui.editparts.GraphicalEditPart) {
+            SiriusGraphicsSVG sgfx = (SiriusGraphicsSVG) gfx;
+            EObject o = ((org.eclipse.gmf.runtime.diagram.ui.editparts.GraphicalEditPart) part).resolveSemanticElement();
+            if (o instanceof DSemanticDecorator) {
+                o = ((DSemanticDecorator) o).getTarget();
+            }
+            sgfx.setCurrentId(EcoreUtil.getURI(o).toString());
+        }
+    }
+    
     /**
      * @return Returns the rendered image created by previous call to
      *         createSWTImageDescriptorForParts

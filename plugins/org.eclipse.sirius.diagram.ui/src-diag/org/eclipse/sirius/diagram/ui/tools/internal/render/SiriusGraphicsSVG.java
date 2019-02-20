@@ -29,6 +29,7 @@ import org.eclipse.gmf.runtime.draw2d.ui.render.awt.internal.svg.SVGColorConvert
 import org.eclipse.gmf.runtime.draw2d.ui.render.awt.internal.svg.SVGImage;
 import org.eclipse.gmf.runtime.draw2d.ui.render.internal.DrawableRenderedImage;
 import org.eclipse.gmf.runtime.draw2d.ui.render.internal.RenderingListener;
+import org.eclipse.sirius.diagram.DiagramPackage;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -47,6 +48,18 @@ import org.w3c.dom.Element;
 // CHECKSTYLE:OFF
 public class SiriusGraphicsSVG extends SiriusGraphicsToGraphics2DAdaptor implements DrawableRenderedImage {
 
+    private static class CustomSVGGraphics2D extends SVGGraphics2D {
+        public CustomSVGGraphics2D(Document doc) {
+            super(doc);
+        }
+        public void setupCustomShapeConverter() {
+            this.shapeConverter = new AnnotatedSVGShape(this.generatorCtx, DiagramPackage.eNS_PREFIX);
+        }
+        public void setCurrentId(String id) {
+            ((AnnotatedSVGShape) this.shapeConverter).setCurrentSemanticElement(id);
+        }
+    }
+    
     private Document doc;
 
     /**
@@ -58,7 +71,7 @@ public class SiriusGraphicsSVG extends SiriusGraphicsToGraphics2DAdaptor impleme
      * @return a new <code>SiriusGraphicsSVG</code> object.
      */
     public static SiriusGraphicsSVG getInstance(Rectangle viewPort) {
-        SVGGraphics2D svgGraphics;
+        CustomSVGGraphics2D svgGraphics;
 
         // Get the DOM implementation and create the document
         DOMImplementation impl = SVGDOMImplementation.getDOMImplementation();
@@ -66,13 +79,15 @@ public class SiriusGraphicsSVG extends SiriusGraphicsToGraphics2DAdaptor impleme
         Document doc = impl.createDocument(svgNameSpace, "svg", null); //$NON-NLS-1$
 
         // Create the SVG Graphics Object
-        svgGraphics = new SVGGraphics2D(doc);
+        svgGraphics = new CustomSVGGraphics2D(doc);
 
         // Set the precision level to avoid NPEs (issue with Batik 1.5)
         svgGraphics.getGeneratorContext().setPrecision(3);
 
         // Set the Width and Height Attributes on the Root Element
         svgGraphics.setSVGCanvasSize(new Dimension(viewPort.width, viewPort.height));
+        
+        svgGraphics.setupCustomShapeConverter();
 
         return new SiriusGraphicsSVG(svgGraphics, doc, svgNameSpace, viewPort);
     }
@@ -82,6 +97,10 @@ public class SiriusGraphicsSVG extends SiriusGraphicsToGraphics2DAdaptor impleme
      */
     public SVGGraphics2D getSVGGraphics2D() {
         return (SVGGraphics2D) getGraphics2D();
+    }
+    
+    public void setCurrentId(String id) {
+        ((CustomSVGGraphics2D) getSVGGraphics2D()).setCurrentId(id);
     }
 
     /**
