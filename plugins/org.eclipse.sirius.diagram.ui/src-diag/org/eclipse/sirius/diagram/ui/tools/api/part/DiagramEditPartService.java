@@ -436,7 +436,7 @@ public class DiagramEditPartService extends org.eclipse.gmf.runtime.diagram.ui.r
 
         ImageLoader imageLoader = new ImageLoader();
         imageLoader.data = new ImageData[] { imageData };
-        imageLoader.logicalScreenHeight = image.getBounds().width;
+        imageLoader.logicalScreenWidth = image.getBounds().width;
         imageLoader.logicalScreenHeight = image.getBounds().height;
         if (imageFormat.equals(ImageFileFormat.JPG)) {
             imageLoader.compression = 100;
