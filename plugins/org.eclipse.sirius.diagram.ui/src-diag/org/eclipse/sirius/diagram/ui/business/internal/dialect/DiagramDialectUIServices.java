@@ -436,7 +436,7 @@ public class DiagramDialectUIServices implements DialectUIServices {
                     final Diagram diagram = (Diagram) dataElement;
                     synchronizeDiagram(diagram);
 
-                    final DiagramEditPartService tool = new DiagramEditPartService();
+                    final DiagramEditPartService tool = new DiagramEditPartService(format.isSemanticTraceabilityEnabled());
                     configureScalingPolicy(tool, format.getScalingPolicy(), format.getScalingLevel());
                     if (exportToHtml) {
                         tool.exportToHtml();
