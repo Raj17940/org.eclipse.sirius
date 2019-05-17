@@ -17,7 +17,10 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
@@ -27,19 +30,34 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.draw2d.Graphics;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.PrecisionRectangle;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.gef.ConnectionEditPart;
+import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gmf.runtime.common.core.util.Log;
 import org.eclipse.gmf.runtime.common.core.util.Trace;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.DiagramEditPart;
+import org.eclipse.gmf.runtime.diagram.ui.editparts.IGraphicalEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.l10n.SharedImages;
 import org.eclipse.gmf.runtime.diagram.ui.render.clipboard.DiagramGenerator;
 import org.eclipse.gmf.runtime.diagram.ui.render.internal.DiagramUIRenderDebugOptions;
 import org.eclipse.gmf.runtime.diagram.ui.render.internal.DiagramUIRenderPlugin;
+import org.eclipse.gmf.runtime.draw2d.ui.mapmode.IMapMode;
 import org.eclipse.gmf.runtime.draw2d.ui.render.RenderedImage;
 import org.eclipse.gmf.runtime.draw2d.ui.render.awt.internal.image.ImageConverter;
 import org.eclipse.gmf.runtime.draw2d.ui.render.factory.RenderedImageFactory;
 import org.eclipse.gmf.runtime.draw2d.ui.render.internal.RenderedImageDescriptor;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.sirius.diagram.DSemanticDiagram;
+import org.eclipse.sirius.diagram.DiagramPackage;
+import org.eclipse.sirius.diagram.ui.edit.api.part.IDiagramElementEditPart;
+import org.eclipse.sirius.diagram.ui.edit.internal.part.CommonEditPartOperation;
+import org.eclipse.sirius.viewpoint.DSemanticDecorator;
+import org.eclipse.swt.graphics.ImageData;
 import org.w3c.dom.Element;
 
 /**
@@ -55,6 +73,7 @@ import org.w3c.dom.Element;
  * @author jschofie / sshaw
  */
 // CHECKSTYLE:OFF
+@SuppressWarnings("restriction")
 public class SiriusDiagramSVGGenerator extends DiagramGenerator {
 
     private RenderedImage renderedImage = null;
@@ -63,14 +82,19 @@ public class SiriusDiagramSVGGenerator extends DiagramGenerator {
 
     private Rectangle viewBox = null;
 
+    private boolean svgTraceability;
+
     /**
      * Creates a new instance.
      *
      * @param diagramEditPart
      *            the diagram editpart
+     * @param svgTraceability
+     *            whether we should add an attribute in SVG elements to keep the ID of the target semantic element.
      */
-    public SiriusDiagramSVGGenerator(DiagramEditPart diagramEditPart) {
+    public SiriusDiagramSVGGenerator(DiagramEditPart diagramEditPart, boolean svgTraceability) {
         super(diagramEditPart);
+        this.svgTraceability = svgTraceability;
     }
 
     /*
@@ -83,7 +107,7 @@ public class SiriusDiagramSVGGenerator extends DiagramGenerator {
     protected Graphics setUpGraphics(int width, int height) {
         viewBox = new Rectangle(0, 0, width, height);
         // GraphicsSVG replaced by SiriusGraphicsSVG
-        return SiriusGraphicsSVG.getInstance(viewBox);
+        return SiriusGraphicsSVG.getInstance(viewBox, svgTraceability);
     }
 
     /*
@@ -130,6 +154,8 @@ public class SiriusDiagramSVGGenerator extends DiagramGenerator {
                             String.valueOf(viewBox.y) + " " + //$NON-NLS-1$
                             String.valueOf(viewBox.width) + " " + //$NON-NLS-1$
                             String.valueOf(viewBox.height));
+            EObject semanticRoot = ((DSemanticDiagram) getDiagramEditPart().resolveSemanticElement()).getTarget();
+            svgRoot.setAttributeNS(DiagramPackage.eNS_URI, "diagram:semanticRoot", EcoreUtil.getURI(semanticRoot).toString()); //$NON-NLS-1$
 
             // Write the document to the stream
             Transformer transformer = TransformerFactory.newInstance().newTransformer();
@@ -178,6 +204,115 @@ public class SiriusDiagramSVGGenerator extends DiagramGenerator {
         return ImageConverter.convert(SharedImages.get(SharedImages.IMG_ERROR));
     }
 
+    /**
+     * Copied from
+     * org.eclipse.gmf.runtime.diagram.ui.render.clipboard.DiagramGenerator.createSWTImageDescriptorForParts(List,
+     * Rectangle) to override the RenderedMapModeGraphics by the Sirius one.
+     */
+    public ImageDescriptor createSWTImageDescriptorForParts(List editparts, org.eclipse.swt.graphics.Rectangle sourceRect) {
+
+        // initialize imageDesc to the error icon
+        ImageDescriptor imageDesc = new ImageDescriptor() {
+
+            /*
+             * (non-Javadoc)
+             * @see org.eclipse.jface.resource.ImageDescriptor#getImageData()
+             */
+            public ImageData getImageData() {
+                return SharedImages.get(SharedImages.IMG_ERROR).getImageData();
+            }
+        };
+
+        Graphics graphics = null;
+        try {
+            IMapMode mm = getMapMode();
+
+            PrecisionRectangle rect = new PrecisionRectangle();
+            rect.setX(sourceRect.x);
+            rect.setY(sourceRect.y);
+            rect.setWidth(sourceRect.width);
+            rect.setHeight(sourceRect.height);
+
+            mm.LPtoDP(rect);
+
+            // Create the graphics and wrap it with the HiMetric graphics object
+            graphics = setUpGraphics((int) Math.round(rect.preciseWidth()), (int) Math.round(rect.preciseHeight()));
+
+            SiriusRenderedMapModeGraphics mapModeGraphics = new SiriusRenderedMapModeGraphics(graphics, getMapMode());
+
+            renderToGraphics(mapModeGraphics, new Point(sourceRect.x, sourceRect.y), editparts);
+            imageDesc = getImageDescriptor(graphics);
+        } finally {
+            if (graphics != null)
+                disposeGraphics(graphics);
+        }
+
+        return imageDesc;
+    }
+
+
+    @SuppressWarnings("rawtypes")
+    @Override
+    protected void renderToGraphics(Graphics graphics,
+            Point translateOffset, List editparts) {
+
+//      List sortedEditparts = sortSelection(editparts);
+
+        graphics.translate((-translateOffset.x), (-translateOffset.y));
+        graphics.pushState();
+
+        List<GraphicalEditPart> connectionsToPaint = new LinkedList<GraphicalEditPart>();
+
+        Map decorations = findDecorations(editparts);
+
+        for (Iterator editPartsItr = editparts.listIterator(); editPartsItr.hasNext();) {
+            IGraphicalEditPart editPart = (IGraphicalEditPart) editPartsItr.next();
+
+            // do not paint selected connection part
+            if (editPart instanceof ConnectionEditPart) {
+                connectionsToPaint.add(editPart);
+            } else {                
+                connectionsToPaint.addAll(findConnectionsToPaint(editPart));
+                // paint shape figure
+                IFigure figure = editPart.getFigure();
+                setCurrentId(graphics, editPart);
+                paintFigure(graphics, figure);
+                paintDecorations(graphics, figure, decorations);
+                resetCurrentId(graphics);
+            }
+        }
+        
+        // paint the connection parts after shape parts paint
+        decorations = findDecorations(connectionsToPaint);
+
+        for (Iterator<GraphicalEditPart> connItr = connectionsToPaint.iterator(); connItr.hasNext();) {
+            GraphicalEditPart conn = connItr.next();
+            setCurrentId(graphics, conn);
+            IFigure figure = conn.getFigure();
+            paintFigure(graphics, figure);
+            paintDecorations(graphics, figure, decorations);
+            resetCurrentId(graphics);
+        }
+        // for each editpart (including children and connections), register the corresponding figure's absolute bounds with the annotation to add
+        // then in stream (or is it getImageDescritor?) iterate on the final SVG document, and for each SVGOMRectElement, find the best match in the previous map and add the corresponding id.
+    }
+    
+    private void resetCurrentId(Graphics gfx) {
+        CommonEditPartOperation.setGraphicsTraceabilityId(gfx, null);
+    }
+    
+    private void setCurrentId(Graphics gfx, GraphicalEditPart part) {
+        if (part instanceof IDiagramElementEditPart) {
+            CommonEditPartOperation.setGraphicsTraceabilityId(gfx, () -> {
+                EObject o = ((IDiagramElementEditPart) part).resolveSemanticElement();
+                if (o instanceof DSemanticDecorator) {
+                    return ((DSemanticDecorator) o).getTarget();
+                }
+                return o;
+            });
+        }
+    }
+    
     /**
      * @return Returns the rendered image created by previous call to
      *         createSWTImageDescriptorForParts

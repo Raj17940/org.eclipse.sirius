@@ -487,7 +487,9 @@ public abstract class AbstractDiagramEdgeEditPart extends ConnectionNodeEditPart
             public void paint(Graphics graphics) {
                 ShowingViewUtil.initGraphicsForVisibleAndInvisibleElements(this, graphics, model);
                 try {
+                    CommonEditPartOperation.setGraphicsTraceabilityId(graphics, () -> resolveTargetSemanticElement());
                     super.paint(graphics);
+                    CommonEditPartOperation.setGraphicsTraceabilityId(graphics, null);
                     graphics.restoreState();
                 } finally {
                     graphics.popState();
