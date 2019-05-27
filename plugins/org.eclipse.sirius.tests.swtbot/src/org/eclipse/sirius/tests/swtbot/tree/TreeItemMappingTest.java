@@ -33,9 +33,8 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.junit.Test;
 
 /**
- * Test tree item mapping. Test automatic refresh and manual refresh. Test
- * undo/redo after each test type Test opening and closing model or editor to
- * verify that all changes are effective
+ * Test tree item mapping. Test automatic refresh and manual refresh. Test undo/redo after each test type Test opening
+ * and closing model or editor to verify that all changes are effective
  * 
  * @author jdupont
  */
@@ -183,7 +182,7 @@ public class TreeItemMappingTest extends AbstractTreeSiriusSWTBotGefTestCase {
         editor.setFocus();
 
         // Manual refreh with click context menu
-        bot.toolbarButtonWithTooltip("Force a refresh of the tree").click();
+        editor.bot().toolbarButtonWithTooltip("Force a refresh of the tree").click();
 
         refreshEditorTest();
 
@@ -310,8 +309,7 @@ public class TreeItemMappingTest extends AbstractTreeSiriusSWTBotGefTestCase {
     }
 
     /**
-     * Modify all fields in properties view of tree item style description in
-     * viewpoint specific model (.odesign).
+     * Modify all fields in properties view of tree item style description in viewpoint specific model (.odesign).
      * 
      * @param odesignEditor
      *            the odesign editor.
@@ -357,7 +355,7 @@ public class TreeItemMappingTest extends AbstractTreeSiriusSWTBotGefTestCase {
         TreeItem widgetDataType = null;
 
         if (editor.bot().tree().getTreeItem("datatype").widget instanceof TreeItem) {
-            widgetDataType = (TreeItem) editor.bot().tree().getTreeItem("datatype").widget;
+            widgetDataType = editor.bot().tree().getTreeItem("datatype").widget;
         }
 
         String semanticElement = null;

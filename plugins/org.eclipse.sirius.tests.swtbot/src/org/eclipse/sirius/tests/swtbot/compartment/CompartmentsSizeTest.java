@@ -65,6 +65,9 @@ public class CompartmentsSizeTest extends AbstractCompartmentTest {
 
     @Override
     protected void tearDown() throws Exception {
+        if (editor != null) {
+            editor.close();
+        }
         if (oldFont != null) {
             changeDefaultFontName(oldFont);
         }

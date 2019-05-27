@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2014 THALES GLOBAL SERVICES.
+ * Copyright (c) 2010, 2019 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@ import org.eclipse.sirius.tests.swtbot.support.api.business.UIResource;
 import org.eclipse.sirius.tests.swtbot.support.api.condition.TreeItemExpanded;
 import org.eclipse.sirius.tests.swtbot.support.api.editor.SWTBotSiriusDiagramEditor;
 import org.eclipse.sirius.ui.tools.api.views.modelexplorerview.IModelExplorerView;
+import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
@@ -29,8 +30,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 
 /**
- * This abstract test class contains all common items related to the swtbot
- * GroupingContentProviderTest test cases.
+ * This abstract test class contains all common items related to the swtbot GroupingContentProviderTest test cases.
  */
 public class AbstractGroupingContentProviderTest extends AbstractSiriusSwtBotGefTestCase {
 
@@ -114,7 +114,9 @@ public class AbstractGroupingContentProviderTest extends AbstractSiriusSwtBotGef
         representation.setFocus();
         representation.activateTool("Pane Based Selection");
         representation.click(50, 100);
-        SWTBotTree tree = bot.activeShell().bot().tree().select(0);
+        bot.waitUntil(Conditions.shellIsActive("Pane Based"));
+        SWTBot wizardBot = bot.shell("Pane Based").bot();
+        SWTBotTree tree = wizardBot.tree().select(0);
         SWTBotTreeItem swtBotTreeItem = tree.getAllItems()[0];
         SWTBotTreeItem[] items = swtBotTreeItem.getItems();
         return items;
@@ -126,7 +128,9 @@ public class AbstractGroupingContentProviderTest extends AbstractSiriusSwtBotGef
         representation.setFocus();
         representation.activateTool("Tree Selection");
         representation.click(50, 100);
-        SWTBotTree tree = bot.activeShell().bot().tree().select(0);
+        bot.waitUntil(Conditions.shellIsActive("Selection Wizard"));
+        SWTBot wizardBot = bot.shell("Selection Wizard").bot();
+        SWTBotTree tree = wizardBot.tree().select(0);
         SWTBotTreeItem swtBotTreeItem = tree.getAllItems()[0];
         SWTBotTreeItem[] items = swtBotTreeItem.getItems();
         return items;

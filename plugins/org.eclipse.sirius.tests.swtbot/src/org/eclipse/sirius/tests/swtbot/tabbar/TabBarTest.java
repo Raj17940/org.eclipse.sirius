@@ -50,6 +50,7 @@ import org.eclipse.sirius.tests.swtbot.support.utils.SWTBotUtils;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefFigureCanvas;
+import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.Result;
@@ -101,10 +102,9 @@ public class TabBarTest extends AbstractSiriusSwtBotGefTestCase {
             Messages.EditModeAction_Label, "Font Color", "Fill &Color", "Li&ne Color", "Line Style" };
 
     private static final String[] CONTAINER_TOOLBARBUTTONS_TOOLTIPS = { Messages.PinElementsEclipseAction_text, Messages.UnpinElementsEclipseAction_text, Messages.CopyFormatAction_toolTipText,
-            Messages.SiriusDiagramActionBarContributor_showElement,
-            Messages.SiriusDiagramActionBarContributor_hideElement, Messages.RevealOutlineLabelsAction_label, Messages.SiriusDiagramActionBarContributor_hideLabel,
-            Messages.SiriusDiagramActionBarContributor_deleteFromDiagram,
-            Messages.SiriusDiagramActionBarContributor_deleteFromModel, "Font", Messages.SetStyleToWorkspaceImageAction_text, Messages.ResetStylePropertiesToDefaultValuesAction_text,
+            Messages.SiriusDiagramActionBarContributor_showElement, Messages.SiriusDiagramActionBarContributor_hideElement, Messages.RevealOutlineLabelsAction_label,
+            Messages.SiriusDiagramActionBarContributor_hideLabel, Messages.SiriusDiagramActionBarContributor_deleteFromDiagram, Messages.SiriusDiagramActionBarContributor_deleteFromModel, "Font",
+            Messages.SetStyleToWorkspaceImageAction_text, Messages.ResetStylePropertiesToDefaultValuesAction_text,
             "Apply the applicable appearance properties of the last selected shape to the other selected shapes.", "Make height and width same size", "Auto Size" };
 
     private static final String[] CONTAINER_TOOLBARTOGGLEBUTTONS_TOOLTIPS = { "Bold Font Style", "Italic Font Style" };
@@ -211,8 +211,9 @@ public class TabBarTest extends AbstractSiriusSwtBotGefTestCase {
                 .selectRepresentationInstance(REPRESENTATION_INSTANCE_NAME, UIDiagramRepresentation.class).getTreeItem().select();
         SWTBotUtils.clickContextMenu(representationTreeItem, "Copy");
         bot.waitUntilWidgetAppears(Conditions.shellIsActive("Copy representation"));
-        bot.text(REPRESENTATION_INSTANCE_NAME).setText(REPRESENTATION_INSTANCE_NAME + "_Copy");
-        bot.button("OK").click();
+        SWTBot wizardBot = bot.shell("Copy representation").bot();
+        wizardBot.text(REPRESENTATION_INSTANCE_NAME).setText(REPRESENTATION_INSTANCE_NAME + "_Copy");
+        wizardBot.button("OK").click();
 
         SWTBotSiriusDiagramEditor editorCopy = (SWTBotSiriusDiagramEditor) openRepresentation(localSession.getOpenedSession(), REPRESENTATION_NAME, REPRESENTATION_INSTANCE_NAME + "_Copy",
                 DDiagram.class);

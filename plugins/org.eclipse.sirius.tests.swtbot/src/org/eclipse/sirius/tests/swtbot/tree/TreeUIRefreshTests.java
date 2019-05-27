@@ -92,9 +92,8 @@ public class TreeUIRefreshTests extends AbstractTreeSiriusSWTBotGefTestCase {
     }
 
     /**
-     * Test that changing the feature {@link TreePackage#DTREE_ITEM__EXPANDED}
-     * of a {@link DTreeItem}, expand/collapse correctly the corresponding SWT
-     * {@link TreeItem}.
+     * Test that changing the feature {@link TreePackage#DTREE_ITEM__EXPANDED} of a {@link DTreeItem}, expand/collapse
+     * correctly the corresponding SWT {@link TreeItem}.
      */
     public void testTreeItemExpansion() {
         // Test expansion
@@ -102,11 +101,11 @@ public class TreeUIRefreshTests extends AbstractTreeSiriusSWTBotGefTestCase {
 
         TreeUtils.checkTreeItemCollapse(treeEditorBot, firstDTreeItem);
 
-        undo("Set Expanded");
+        undo("Set Expanded", treeEditorBot.bot());
 
         TreeUtils.checkTreeItemCollapse(treeEditorBot, firstDTreeItem);
 
-        redo("Set Expanded");
+        redo("Set Expanded", treeEditorBot.bot());
 
         TreeUtils.checkTreeItemCollapse(treeEditorBot, firstDTreeItem);
 
@@ -115,20 +114,18 @@ public class TreeUIRefreshTests extends AbstractTreeSiriusSWTBotGefTestCase {
 
         TreeUtils.checkTreeItemCollapse(treeEditorBot, firstDTreeItem);
 
-        undo("Set Expanded");
+        undo("Set Expanded", treeEditorBot.bot());
 
         TreeUtils.checkTreeItemCollapse(treeEditorBot, firstDTreeItem);
 
-        redo("Set Expanded");
+        redo("Set Expanded", treeEditorBot.bot());
 
         TreeUtils.checkTreeItemCollapse(treeEditorBot, firstDTreeItem);
     }
 
     /**
-     * Test that changing the feature
-     * {@link TreePackage#TREE_ITEM_STYLE__BACKGROUND_COLOR} of a
-     * {@link DTreeItem}, update correctly the background color of the
-     * corresponding SWT {@link TreeItem}.
+     * Test that changing the feature {@link TreePackage#TREE_ITEM_STYLE__BACKGROUND_COLOR} of a {@link DTreeItem},
+     * update correctly the background color of the corresponding SWT {@link TreeItem}.
      */
     public void testTreeItemStyleBackgroundColor() {
         // Test a first color change
@@ -149,11 +146,12 @@ public class TreeUIRefreshTests extends AbstractTreeSiriusSWTBotGefTestCase {
 
         TreeUtils.checkTreeItemBackgroundColor(treeEditorBot, firstDTreeItem);
 
-        undo(cmdLabel);
+        treeEditorBot.setFocus();
+        undo(cmdLabel, treeEditorBot.bot());
 
         TreeUtils.checkTreeItemBackgroundColor(treeEditorBot, firstDTreeItem);
 
-        redo(cmdLabel);
+        redo(cmdLabel, treeEditorBot.bot());
 
         TreeUtils.checkTreeItemBackgroundColor(treeEditorBot, firstDTreeItem);
 
@@ -164,20 +162,18 @@ public class TreeUIRefreshTests extends AbstractTreeSiriusSWTBotGefTestCase {
 
         TreeUtils.checkTreeItemBackgroundColor(treeEditorBot, firstDTreeItem);
 
-        undo(cmdLabel);
+        undo(cmdLabel, treeEditorBot.bot());
 
         TreeUtils.checkTreeItemBackgroundColor(treeEditorBot, firstDTreeItem);
 
-        redo(cmdLabel);
+        redo(cmdLabel, treeEditorBot.bot());
 
         TreeUtils.checkTreeItemBackgroundColor(treeEditorBot, firstDTreeItem);
     }
 
     /**
-     * Test that changing the feature
-     * {@link ViewpointPackage#BASIC_LABEL_STYLE__LABEL_SIZE} of a
-     * {@link DTreeItem}, update correctly the text size in swt {@link TreeItem}
-     * .
+     * Test that changing the feature {@link ViewpointPackage#BASIC_LABEL_STYLE__LABEL_SIZE} of a {@link DTreeItem},
+     * update correctly the text size in swt {@link TreeItem} .
      */
     public void testTreeItemStyleLabelSize() {
         TreeItemStyle treeItemStyle = thirdDTreeItem.getOwnedStyle();
@@ -191,11 +187,11 @@ public class TreeUIRefreshTests extends AbstractTreeSiriusSWTBotGefTestCase {
 
         TreeUtils.checkTreeItemLabelSize(treeEditorBot, thirdDTreeItem);
 
-        undo("Set Label Size");
+        undo("Set Label Size", treeEditorBot.bot());
 
         TreeUtils.checkTreeItemLabelSize(treeEditorBot, thirdDTreeItem);
 
-        redo("Set Label Size");
+        redo("Set Label Size", treeEditorBot.bot());
 
         TreeUtils.checkTreeItemLabelSize(treeEditorBot, thirdDTreeItem);
 
@@ -205,11 +201,11 @@ public class TreeUIRefreshTests extends AbstractTreeSiriusSWTBotGefTestCase {
 
         TreeUtils.checkTreeItemLabelSize(treeEditorBot, thirdDTreeItem);
 
-        undo("Set Label Size");
+        undo("Set Label Size", treeEditorBot.bot());
 
         TreeUtils.checkTreeItemLabelSize(treeEditorBot, thirdDTreeItem);
 
-        redo("Set Label Size");
+        redo("Set Label Size", treeEditorBot.bot());
 
         TreeUtils.checkTreeItemLabelSize(treeEditorBot, thirdDTreeItem);
 
@@ -223,10 +219,8 @@ public class TreeUIRefreshTests extends AbstractTreeSiriusSWTBotGefTestCase {
     }
 
     /**
-     * Test that changing the feature
-     * {@link ViewpointPackage#BASIC_LABEL_STYLE__LABEL_FORMAT} of a
-     * {@link DTreeItem}, update correctly the text format in swt
-     * {@link TreeItem} .
+     * Test that changing the feature {@link ViewpointPackage#BASIC_LABEL_STYLE__LABEL_FORMAT} of a {@link DTreeItem},
+     * update correctly the text format in swt {@link TreeItem} .
      */
     public void testTreeItemStyleLabelFormat() {
         TreeItemStyle treeItemStyle = secondDTreeItem.getOwnedStyle();
@@ -241,11 +235,11 @@ public class TreeUIRefreshTests extends AbstractTreeSiriusSWTBotGefTestCase {
 
         TreeUtils.checkTreeItemLabelFormat(treeEditorBot, secondDTreeItem);
 
-        undo("Set Label Format");
+        undo("Set Label Format", treeEditorBot.bot());
 
         TreeUtils.checkTreeItemLabelFormat(treeEditorBot, secondDTreeItem);
 
-        redo("Set Label Format");
+        redo("Set Label Format", treeEditorBot.bot());
 
         TreeUtils.checkTreeItemLabelFormat(treeEditorBot, secondDTreeItem);
 
@@ -257,7 +251,7 @@ public class TreeUIRefreshTests extends AbstractTreeSiriusSWTBotGefTestCase {
 
         TreeUtils.checkTreeItemLabelFormat(treeEditorBot, secondDTreeItem);
 
-        undo("Set Label Format");
+        undo("Set Label Format", treeEditorBot.bot());
 
         TreeUtils.checkTreeItemLabelFormat(treeEditorBot, secondDTreeItem);
 
@@ -272,11 +266,11 @@ public class TreeUIRefreshTests extends AbstractTreeSiriusSWTBotGefTestCase {
 
         TreeUtils.checkTreeItemLabelFormat(treeEditorBot, secondDTreeItem);
 
-        undo("Set Label Format");
+        undo("Set Label Format", treeEditorBot.bot());
 
         TreeUtils.checkTreeItemLabelFormat(treeEditorBot, secondDTreeItem);
 
-        redo("Set Label Format");
+        redo("Set Label Format", treeEditorBot.bot());
 
         TreeUtils.checkTreeItemLabelFormat(treeEditorBot, thirdDTreeItem);
 
@@ -288,11 +282,11 @@ public class TreeUIRefreshTests extends AbstractTreeSiriusSWTBotGefTestCase {
 
         TreeUtils.checkTreeItemLabelFormat(treeEditorBot, secondDTreeItem);
 
-        undo("Set Label Format");
+        undo("Set Label Format", treeEditorBot.bot());
 
         TreeUtils.checkTreeItemLabelFormat(treeEditorBot, secondDTreeItem);
 
-        redo("Set Label Format");
+        redo("Set Label Format", treeEditorBot.bot());
 
         TreeUtils.checkTreeItemLabelFormat(treeEditorBot, secondDTreeItem);
 
@@ -304,19 +298,18 @@ public class TreeUIRefreshTests extends AbstractTreeSiriusSWTBotGefTestCase {
 
         TreeUtils.checkTreeItemLabelFormat(treeEditorBot, secondDTreeItem);
 
-        undo("Set Label Format");
+        undo("Set Label Format", treeEditorBot.bot());
 
         TreeUtils.checkTreeItemLabelFormat(treeEditorBot, secondDTreeItem);
 
-        redo("Set Label Format");
+        redo("Set Label Format", treeEditorBot.bot());
 
         TreeUtils.checkTreeItemLabelFormat(treeEditorBot, secondDTreeItem);
     }
 
     /**
-     * Test that changing the feature
-     * {@link ViewpointPackage#BASIC_LABEL_STYLE__SHOW_ICON} of a
-     * {@link DTreeItem}, update correctly the {@link TreeItem}'s icon .
+     * Test that changing the feature {@link ViewpointPackage#BASIC_LABEL_STYLE__SHOW_ICON} of a {@link DTreeItem},
+     * update correctly the {@link TreeItem}'s icon .
      */
     public void testTreeItemStyleShowIcon() {
         TreeItemStyle treeItemStyle = secondDTreeItem.getOwnedStyle();
@@ -328,11 +321,11 @@ public class TreeUIRefreshTests extends AbstractTreeSiriusSWTBotGefTestCase {
 
         TreeUtils.checkTreeItemShowIcon(treeEditorBot, secondDTreeItem);
 
-        undo("Set Show Icon");
+        undo("Set Show Icon", treeEditorBot.bot());
 
         TreeUtils.checkTreeItemShowIcon(treeEditorBot, secondDTreeItem);
 
-        redo("Set Show Icon");
+        redo("Set Show Icon", treeEditorBot.bot());
 
         TreeUtils.checkTreeItemShowIcon(treeEditorBot, secondDTreeItem);
 
@@ -341,19 +334,18 @@ public class TreeUIRefreshTests extends AbstractTreeSiriusSWTBotGefTestCase {
 
         TreeUtils.checkTreeItemShowIcon(treeEditorBot, secondDTreeItem);
 
-        undo("Set Show Icon");
+        undo("Set Show Icon", treeEditorBot.bot());
 
         TreeUtils.checkTreeItemShowIcon(treeEditorBot, secondDTreeItem);
 
-        redo("Set Show Icon");
+        redo("Set Show Icon", treeEditorBot.bot());
 
         TreeUtils.checkTreeItemShowIcon(treeEditorBot, secondDTreeItem);
     }
 
     /**
-     * Test that changing the feature
-     * {@link ViewpointPackage#BASIC_LABEL_STYLE__LABEL_COLOR} of a
-     * {@link DTreeItem}, update correctly the {@link TreeItem}'s label color .
+     * Test that changing the feature {@link ViewpointPackage#BASIC_LABEL_STYLE__LABEL_COLOR} of a {@link DTreeItem},
+     * update correctly the {@link TreeItem}'s label color .
      */
     public void testTreeItemStyleLabelColor() {
         // Test a first color change
@@ -374,11 +366,11 @@ public class TreeUIRefreshTests extends AbstractTreeSiriusSWTBotGefTestCase {
 
         TreeUtils.checkTreeItemBackgroundColor(treeEditorBot, firstDTreeItem);
 
-        undo(cmdLabel);
+        undo(cmdLabel, treeEditorBot.bot());
 
         TreeUtils.checkTreeItemLabelColor(treeEditorBot, firstDTreeItem);
 
-        redo(cmdLabel);
+        redo(cmdLabel, treeEditorBot.bot());
 
         TreeUtils.checkTreeItemLabelColor(treeEditorBot, firstDTreeItem);
 
@@ -389,11 +381,11 @@ public class TreeUIRefreshTests extends AbstractTreeSiriusSWTBotGefTestCase {
 
         TreeUtils.checkTreeItemLabelColor(treeEditorBot, firstDTreeItem);
 
-        undo(cmdLabel);
+        undo(cmdLabel, treeEditorBot.bot());
 
         TreeUtils.checkTreeItemLabelColor(treeEditorBot, firstDTreeItem);
 
-        redo(cmdLabel);
+        redo(cmdLabel, treeEditorBot.bot());
 
         TreeUtils.checkTreeItemLabelColor(treeEditorBot, firstDTreeItem);
     }

@@ -49,7 +49,6 @@ public class OpenDiagramWithExceptionTest extends AbstractSiriusSwtBotGefTestCas
 
     private static final String REPRESENTATION_NAME2 = "new " + DESC_NAME2;
 
-
     /**
      * Make sure that when a {@link ClassCastException} occurs while opening a diagram (because of an unsynchronized
      * issue between GMF and Sirius model), the dialog asking for refreshing the editor is open and when accepting, the
@@ -103,7 +102,7 @@ public class OpenDiagramWithExceptionTest extends AbstractSiriusSwtBotGefTestCas
         });
         thread.start();
         bot.waitUntil(Conditions.shellIsActive("Refresh the diagram"));
-        bot.activeShell().bot().button("OK").click();
+        bot.shell("Refresh the diagram").bot().button("OK").click();
         bot.waitUntil(new DefaultCondition() {
 
             @Override

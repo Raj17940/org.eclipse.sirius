@@ -18,6 +18,7 @@ import org.eclipse.sirius.tests.swtbot.support.api.condition.TreeItemExpanded;
 import org.eclipse.sirius.tests.swtbot.support.api.editor.SWTBotSiriusHelper;
 import org.eclipse.sirius.tests.swtbot.support.api.editor.SWTBotVSMEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
+import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 
@@ -84,8 +85,7 @@ public class InvalidMetamodelRessourceTest extends AbstractSiriusSwtBotGefTestCa
     }
 
     /**
-     * Check that the error message for invalid meta-model URI appears in the
-     * "Error Log" view.
+     * Check that the error message for invalid meta-model URI appears in the "Error Log" view.
      */
     private void checkMessageErrorLog() {
         try {
@@ -104,15 +104,16 @@ public class InvalidMetamodelRessourceTest extends AbstractSiriusSwtBotGefTestCa
      */
     private void openErrorLogView() {
         bot.menu("Window").menu("Show View").menu("Other...").click();
-        SWTBotTree viewsTreeBot = bot.tree();
-        bot.text().setText("Error");
+        SWTBot showViewBot = bot.shell("Show View").bot();
+        SWTBotTree viewsTreeBot = showViewBot.tree();
+        showViewBot.text().setText("Error");
         SWTBotTreeItem expandNode = viewsTreeBot.expandNode("General");
-        bot.waitUntil(new TreeItemExpanded(expandNode, expandNode.getText()));
+        showViewBot.waitUntil(new TreeItemExpanded(expandNode, expandNode.getText()));
         expandNode.getNode("Error Log").click();
         if (TestsUtil.isBeforeOxygenPlatform()) {
-            bot.button("OK").click();
+            showViewBot.button("OK").click();
         } else {
-            bot.button("Open").click();
+            showViewBot.button("Open").click();
         }
     }
 

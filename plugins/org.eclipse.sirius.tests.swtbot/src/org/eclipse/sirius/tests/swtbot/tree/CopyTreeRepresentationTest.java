@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2014 THALES GLOBAL SERVICES.
+ * Copyright (c) 2010, 2019 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,8 @@ import org.eclipse.sirius.tests.swtbot.support.api.business.UIResource;
 import org.eclipse.sirius.tests.swtbot.support.api.editor.SWTBotVSMEditor;
 import org.eclipse.sirius.tests.swtbot.support.api.editor.SWTBotVSMHelper;
 import org.eclipse.sirius.tests.swtbot.support.utils.SWTBotUtils;
+import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
+import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.junit.Test;
@@ -98,9 +100,10 @@ public class CopyTreeRepresentationTest extends AbstractTreeSiriusSWTBotGefTestC
         treeItem = localSession.getLocalSessionBrowser().perSemantic().expandNode("p1").expandNode("myTree").select();
         // Copy tree
         SWTBotUtils.clickContextMenu(treeItem, "Copy");
-
-        bot.activeShell().bot().text(0).setText("myTreeCopy");
-        bot.button("OK").click();
+        bot.waitUntil(Conditions.shellIsActive("Copy representation"));
+        SWTBot wizardBot = bot.shell("Copy representation").bot();
+        wizardBot.text(0).setText("myTreeCopy");
+        wizardBot.button("OK").click();
 
         treeItem = localSession.getLocalSessionBrowser().perSemantic().expandNode("p1").expandNode("myTreeCopy").select();
 
@@ -117,8 +120,10 @@ public class CopyTreeRepresentationTest extends AbstractTreeSiriusSWTBotGefTestC
     private void createTree(SWTBotTreeItem treeItem) {
         SWTBotUtils.clickContextMenu(treeItem, "new Tree");
 
-        bot.activeShell().bot().text(0).setText("myTree");
-        bot.button("OK").click();
+        bot.waitUntil(Conditions.shellIsActive("New Tree"));
+        SWTBot wizardBot = bot.shell("New Tree").bot();
+        wizardBot.text(0).setText("myTree");
+        wizardBot.button("OK").click();
 
         SWTBotVSMEditor odesignEditor = SWTBotVSMHelper.getVSMEditorContainingName("myTree");
         odesignEditor.setFocus();

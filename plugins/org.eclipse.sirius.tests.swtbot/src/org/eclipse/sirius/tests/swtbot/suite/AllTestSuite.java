@@ -12,14 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.tests.swtbot.suite;
 
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.common.util.WrappedException;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.sirius.tests.swtbot.*;
 import org.eclipse.sirius.tests.swtbot.celleditor.CellEditorExtensionTest;
 import org.eclipse.sirius.tests.swtbot.clipboard.CustomClipboardSupportTest;
-import org.eclipse.sirius.tests.swtbot.clipboard.DisabledSiriusClipboardSupportTest;
 import org.eclipse.sirius.tests.swtbot.clipboard.GenericClipboardSupportTest;
 import org.eclipse.sirius.tests.swtbot.clipboard.MultiSessionCopyPasteTest;
 import org.eclipse.sirius.tests.swtbot.compartment.CompartmentsDragAndDropTest;
@@ -29,51 +24,22 @@ import org.eclipse.sirius.tests.swtbot.compartment.CompartmentsWithComponentTest
 import org.eclipse.sirius.tests.swtbot.crossTable.CrossTableIntersectionExpressionTest;
 import org.eclipse.sirius.tests.swtbot.crossTable.CrossTableIntersectionTest;
 import org.eclipse.sirius.tests.swtbot.editor.vsm.BorderNodeSidePropertySectionTest;
-import org.eclipse.sirius.tests.swtbot.editor.vsm.BorderSizeComputationExpressionTest;
-import org.eclipse.sirius.tests.swtbot.editor.vsm.CompletionProposalInVSMTest;
 import org.eclipse.sirius.tests.swtbot.editor.vsm.ContainerDropPropertySectionsTests;
 import org.eclipse.sirius.tests.swtbot.editor.vsm.ContentAssistTest;
 import org.eclipse.sirius.tests.swtbot.editor.vsm.CreateMandatoryElementsTest;
-import org.eclipse.sirius.tests.swtbot.editor.vsm.CustomizationPropertySectionsTests;
 import org.eclipse.sirius.tests.swtbot.editor.vsm.FeatureAssistTest;
-import org.eclipse.sirius.tests.swtbot.editor.vsm.LayoutOptionsTests;
 import org.eclipse.sirius.tests.swtbot.editor.vsm.MetamodelPropertyTabTests;
 import org.eclipse.sirius.tests.swtbot.editor.vsm.MigrationOnVsmEditorReloadTest;
 import org.eclipse.sirius.tests.swtbot.editor.vsm.OpeningContextTest;
 import org.eclipse.sirius.tests.swtbot.editor.vsm.ResizeKindEditorTest;
 import org.eclipse.sirius.tests.swtbot.editor.vsm.ServiceNavigationTest;
-import org.eclipse.sirius.tests.swtbot.editor.vsm.VSMEditorPropertiesTest;
 import org.eclipse.sirius.tests.swtbot.editor.vsm.VSMFieldTest;
-import org.eclipse.sirius.tests.swtbot.editor.vsm.ValidationEmptyNameTest;
-import org.eclipse.sirius.tests.swtbot.editor.vsm.ViewpointSpecificationProjectCreationTest;
-import org.eclipse.sirius.tests.swtbot.layout.BorderedNodeCopyPasteFormatTest;
-import org.eclipse.sirius.tests.swtbot.layout.ContainerAndNodeCopyPasteFormatTest;
-import org.eclipse.sirius.tests.swtbot.layout.ContainerDefaultSizeLayoutTest;
-import org.eclipse.sirius.tests.swtbot.layout.EdgeAndPortStabilityOnSemanticChangeTest;
-import org.eclipse.sirius.tests.swtbot.layout.EdgeCopyPasteFormatTest;
 import org.eclipse.sirius.tests.swtbot.layout.EdgeLayoutStabilityWithToolWizardTest;
 import org.eclipse.sirius.tests.swtbot.layout.EdgeStabilityOnCopyPasteLayoutTest;
-import org.eclipse.sirius.tests.swtbot.layout.LayoutStabilityOnManualRefreshTest;
-import org.eclipse.sirius.tests.swtbot.layout.ModifyEdgeLayoutAfterRefreshTest;
-import org.eclipse.sirius.tests.swtbot.layout.PackageLayoutStabilityOnManyViewsCreationToolTest;
-import org.eclipse.sirius.tests.swtbot.layout.ResetOriginTest;
 import org.eclipse.sirius.tests.swtbot.layout.StraightenToTest;
-import org.eclipse.sirius.tests.swtbot.modelexplorer.ContextualMenuTest;
-import org.eclipse.sirius.tests.swtbot.modelexplorer.LinkWithEditorFeatureWithModelExplorerViewTest;
 import org.eclipse.sirius.tests.swtbot.modelexplorer.LockedModelExplorerTest;
-import org.eclipse.sirius.tests.swtbot.modelexplorer.ModelExplorerFilterTests;
-import org.eclipse.sirius.tests.swtbot.modelexplorer.ProjectDependenciesTest;
-import org.eclipse.sirius.tests.swtbot.modelexplorer.ProjectsConcurrentCloseTest;
-import org.eclipse.sirius.tests.swtbot.modelexplorer.PropertyViewOnModelExplorerSelectionTests;
-import org.eclipse.sirius.tests.swtbot.modelexplorer.PropertyViewOnModelExplorerSelectionWithLockedObjectTest;
 import org.eclipse.sirius.tests.swtbot.modelexplorer.RepresentationVisibilityAfterSessionReloadTest;
-import org.eclipse.sirius.tests.swtbot.sessioneditor.SessionEditorOpeningTests;
-import org.eclipse.sirius.tests.swtbot.tabbar.LockedTabBarTest;
-import org.eclipse.sirius.tests.swtbot.tabbar.NotInvisibleTabBarTest;
-import org.eclipse.sirius.tests.swtbot.tabbar.ResetToDefaultFiltersActionTests;
-import org.eclipse.sirius.tests.swtbot.tabbar.TabBarTest;
 import org.eclipse.sirius.tests.swtbot.tabbar.TabbarContributorExtensionTest;
-import org.eclipse.sirius.tests.swtbot.table.SetPropertyOfTableTreeByPropertiesViewTest;
 import org.eclipse.sirius.tests.swtbot.uml.CopyPasteFormatOfLabelOfBorderedNodeTest;
 import org.eclipse.sirius.tests.swtbot.uml.CopyPasteLayoutOfPortsWithConflictWithNotPastedPortsTest;
 import org.eclipse.sirius.tests.swtbot.uml.CopyPasteLayoutOfPortsWithConflictWithPastedPortsTest;
@@ -133,7 +99,7 @@ public class AllTestSuite extends TestCase {
                 fail("The class " + testClassQualifiedName + ", to launch for test specific case, has not been found.");
             }
         } else {
-            addPart1(suite);
+            // addPart1(suite);
             addPart2(suite);
         }
         return suite;
@@ -346,123 +312,125 @@ public class AllTestSuite extends TestCase {
         // The ViewpointProjectCreationTest should be done before the others
         // ones:
         // to verify the behavior when a specifier first launches the product.
-        suite.addTestSuite(ViewpointSpecificationProjectCreationTest.class);
+        // suite.addTestSuite(ViewpointSpecificationProjectCreationTest.class);
+        //
+        // addGerritPart2(suite);
+        // STDSwtbotTestSuite.addPart2(suite);
+        // TableSwtbotTestSuite.addPart2(suite);
 
-        addGerritPart2(suite);
-        STDSwtbotTestSuite.addPart2(suite);
-        TableSwtbotTestSuite.addPart2(suite);
-
-        suite.addTestSuite(CustomizationPropertySectionsTests.class);
-        suite.addTestSuite(GoToMarkerTraceabilityWithUserInteractionTest.class);
-        suite.addTestSuite(NoteCreationWithSnapToGridTest.class);
-        suite.addTestSuite(ContainerCreationTest.class);
-        suite.addTestSuite(ContainerChildrenPresentationChangeTest.class);
-        suite.addTestSuite(ContainerCreationWithSnapToGridTest.class);
-        suite.addTestSuite(DNodeListCreationTest.class);
-        suite.addTestSuite(DNodeListCreationWithSnapToGridTest.class);
-        suite.addTestSuite(BorderedNodeCreationTest.class);
-        suite.addTestSuite(BorderedNodeCreationWithSnapToGridTest.class);
-        suite.addTestSuite(BorderedNodeResizeCreationTest.class);
-        suite.addTestSuite(BorderedNodeCreationNearCollapsedTest.class);
-        suite.addTestSuite(BorderedNodeCreationNearCollapsedWithSnapToGridTest.class);
-        suite.addTestSuite(CollapsedBorderedNodeCreationTest.class);
-        suite.addTestSuite(CollapsedBorderedNodeCreationWithSnapToGridTest.class);
-        suite.addTestSuite(CollapsedBorderedNodeCreationNearCollapsedTest.class);
-        suite.addTestSuite(CollapsedBorderedNodeCreationNearCollapsedWithSnapToGridTest.class);
-        suite.addTestSuite(EdgeCreationPositionTest.class);
-        suite.addTestSuite(EdgeCreationPositionWithSnapToGridTest.class);
-        suite.addTestSuite(EdgeWithBorderNodeCreationPositionWithSnapToGridTest.class);
-        suite.addTestSuite(HideRevealDiagramElementsLabelsTest.class);
-        suite.addTestSuite(LinkWithEditorFeatureWithModelExplorerViewTest.class);
-        suite.addTestSuite(SpecificLayoutBendpointsOnReopeningTest.class);
-        suite.addTestSuite(BorderSizeComputationExpressionTest.class);
-        suite.addTestSuite(CenteredEdgesTest.class);
-
-        suite.addTestSuite(DeleteHookTests.class);
-
-        // TODO DLE : reenable theses tests as soon as getEditPart method will
-        // be based on matcher.
-        // suite.addTestSuite(ToolWizardTest.class);
-        suite.addTestSuite(ExportDiagramsAsImagesTest.class);
-        suite.addTestSuite(ExportDiagramAsImageFromCloseSessionTest.class);
-        suite.addTestSuite(ExportDiagramsAsImagesAndHtmlTest.class);
-        suite.addTestSuite(TabBarTest.class);
-        suite.addTestSuite(NotInvisibleTabBarTest.class);
-        suite.addTestSuite(ResetToDefaultFiltersActionTests.class);
-        suite.addTestSuite(LockedTabBarTest.class);
-        suite.addTestSuite(LockedRepresentationContainerTest.class);
-        suite.addTestSuite(ArrangeSelectionOnBreakdownDiagramTest.class);
-        suite.addTestSuite(RemovedDefaultColorMenuTest.class);
-        suite.addTestSuite(DuplicationCausedBySelectionTest.class);
-        suite.addTestSuite(EdgeWithMultipleLabelsTest.class);
-        // This test is KO if the cdonative plugins are active (VP-4101), so
-        // launch it only when cdonative plugins are not active.
-        try {
-            Resource resource = new ResourceSetImpl().getResource(URI.createPlatformPluginURI("org.eclipse.sirius.cdonative/model/viewpoint.genmodel", true), true);
-            if (resource == null) {
-                suite.addTestSuite(DisabledSiriusClipboardSupportTest.class);
-            }
-        } catch (WrappedException e) {
-            // Nothing to do, as viewpoint.cdonative is not accessible the
-            // CDONative tests will not be launched
-        }
-        suite.addTestSuite(SetPropertyOfTableTreeByPropertiesViewTest.class);
-        suite.addTestSuite(ElementCreationWithPopupMenuTests.class);
-        suite.addTestSuite(ElementCreationWithPopupMenuWith200PercentOfZoomTests.class);
-        suite.addTestSuite(ElementCreationWithPopupMenuWith50PercentOfZoomTests.class);
-        suite.addTestSuite(PackageLayoutStabilityOnManyViewsCreationToolTest.class);
-        suite.addTestSuite(ResetOriginTest.class);
-        suite.addTestSuite(LayoutStabilityOnManualRefreshTest.class);
-        suite.addTestSuite(EdgeAndPortStabilityOnSemanticChangeTest.class);
-        suite.addTestSuite(SessionSaveableTest.class);
-        suite.addTest(new JUnit4TestAdapter(DragAndDropFromControlledResourceTest.class));
-        suite.addTestSuite(RoundedCornerRefreshTest.class);
-        suite.addTestSuite(ModelExplorerFilterTests.class);
-        suite.addTestSuite(ProjectDependenciesTest.class);
-        suite.addTestSuite(ProjectsConcurrentCloseTest.class);
-        suite.addTestSuite(PropertyViewOnModelExplorerSelectionWithLockedObjectTest.class);
-        // PropertyViewOnModelExplorerSelectionTests.testPropertyViewEditionOnModelExplorerViewSelection()
-        // pass in the suite with CloseWithoutSavingTest and
-        // LockedModelExplorerTest executed before because of Bug 482122
-        suite.addTestSuite(PropertyViewOnModelExplorerSelectionTests.class);
-        suite.addTestSuite(ContextualMenuTest.class);
-        suite.addTestSuite(BracketEdgeTests.class);
-        suite.addTestSuite(EdgeCopyPasteFormatTest.class);
-        suite.addTestSuite(BendpointsStabilityOnMovesTest.class);
-        suite.addTestSuite(BendpointsStabilityOnMovesSpecificCasesTest.class);
-        suite.addTestSuite(BorderedNodeCopyPasteFormatTest.class);
-        suite.addTestSuite(ContainerAndNodeCopyPasteFormatTest.class);
-        suite.addTestSuite(ContainerDefaultSizeLayoutTest.class);
-        suite.addTestSuite(ModifyEdgeLayoutAfterRefreshTest.class);
+        // suite.addTestSuite(CustomizationPropertySectionsTests.class);
+        // suite.addTestSuite(GoToMarkerTraceabilityWithUserInteractionTest.class);
+        // suite.addTestSuite(NoteCreationWithSnapToGridTest.class);
+        // suite.addTestSuite(ContainerCreationTest.class);
+        // suite.addTestSuite(ContainerChildrenPresentationChangeTest.class);
+        // suite.addTestSuite(ContainerCreationWithSnapToGridTest.class);
+        // suite.addTestSuite(DNodeListCreationTest.class);
+        // suite.addTestSuite(DNodeListCreationWithSnapToGridTest.class);
+        // suite.addTestSuite(BorderedNodeCreationTest.class);
+        // suite.addTestSuite(BorderedNodeCreationWithSnapToGridTest.class);
+        // suite.addTestSuite(BorderedNodeResizeCreationTest.class);
+        // suite.addTestSuite(BorderedNodeCreationNearCollapsedTest.class);
+        // suite.addTestSuite(BorderedNodeCreationNearCollapsedWithSnapToGridTest.class);
+        // suite.addTestSuite(CollapsedBorderedNodeCreationTest.class);
+        // suite.addTestSuite(CollapsedBorderedNodeCreationWithSnapToGridTest.class);
+        // suite.addTestSuite(CollapsedBorderedNodeCreationNearCollapsedTest.class);
+        // suite.addTestSuite(CollapsedBorderedNodeCreationNearCollapsedWithSnapToGridTest.class);
+        // suite.addTestSuite(EdgeCreationPositionTest.class);
+        // suite.addTestSuite(EdgeCreationPositionWithSnapToGridTest.class);
+        // suite.addTestSuite(EdgeWithBorderNodeCreationPositionWithSnapToGridTest.class);
+        // suite.addTestSuite(HideRevealDiagramElementsLabelsTest.class);
+        // suite.addTestSuite(LinkWithEditorFeatureWithModelExplorerViewTest.class);
+        // suite.addTestSuite(SpecificLayoutBendpointsOnReopeningTest.class);
+        // suite.addTestSuite(BorderSizeComputationExpressionTest.class);
+        // suite.addTestSuite(CenteredEdgesTest.class);
+        //
+        // suite.addTestSuite(DeleteHookTests.class);
+        //
+        // // TODO DLE : reenable theses tests as soon as getEditPart method will
+        // // be based on matcher.
+        // // suite.addTestSuite(ToolWizardTest.class);
+        // suite.addTestSuite(ExportDiagramsAsImagesTest.class);
+        // suite.addTestSuite(ExportDiagramAsImageFromCloseSessionTest.class);
+        // suite.addTestSuite(ExportDiagramsAsImagesAndHtmlTest.class);
+        // suite.addTestSuite(TabBarTest.class);
+        // suite.addTestSuite(NotInvisibleTabBarTest.class);
+        // suite.addTestSuite(ResetToDefaultFiltersActionTests.class);
+        // suite.addTestSuite(LockedTabBarTest.class);
+        // suite.addTestSuite(LockedRepresentationContainerTest.class);
+        // suite.addTestSuite(ArrangeSelectionOnBreakdownDiagramTest.class);
+        // suite.addTestSuite(RemovedDefaultColorMenuTest.class);
+        // suite.addTestSuite(DuplicationCausedBySelectionTest.class);
+        // suite.addTestSuite(EdgeWithMultipleLabelsTest.class);
+        // // This test is KO if the cdonative plugins are active (VP-4101), so
+        // // launch it only when cdonative plugins are not active.
+        // try {
+        // Resource resource = new
+        // ResourceSetImpl().getResource(URI.createPlatformPluginURI("org.eclipse.sirius.cdonative/model/viewpoint.genmodel",
+        // true), true);
+        // if (resource == null) {
+        // suite.addTestSuite(DisabledSiriusClipboardSupportTest.class);
+        // }
+        // } catch (WrappedException e) {
+        // // Nothing to do, as viewpoint.cdonative is not accessible the
+        // // CDONative tests will not be launched
+        // }
+        // suite.addTestSuite(SetPropertyOfTableTreeByPropertiesViewTest.class);
+        // suite.addTestSuite(ElementCreationWithPopupMenuTests.class);
+        // suite.addTestSuite(ElementCreationWithPopupMenuWith200PercentOfZoomTests.class);
+        // suite.addTestSuite(ElementCreationWithPopupMenuWith50PercentOfZoomTests.class);
+        // suite.addTestSuite(PackageLayoutStabilityOnManyViewsCreationToolTest.class);
+        // suite.addTestSuite(ResetOriginTest.class);
+        // suite.addTestSuite(LayoutStabilityOnManualRefreshTest.class);
+        // suite.addTestSuite(EdgeAndPortStabilityOnSemanticChangeTest.class);
+        // suite.addTestSuite(SessionSaveableTest.class);
+        // suite.addTest(new JUnit4TestAdapter(DragAndDropFromControlledResourceTest.class));
+        // suite.addTestSuite(RoundedCornerRefreshTest.class);
+        // suite.addTestSuite(ModelExplorerFilterTests.class);
+        // suite.addTestSuite(ProjectDependenciesTest.class);
+        // suite.addTestSuite(ProjectsConcurrentCloseTest.class);
+        // suite.addTestSuite(PropertyViewOnModelExplorerSelectionWithLockedObjectTest.class);
+        // // PropertyViewOnModelExplorerSelectionTests.testPropertyViewEditionOnModelExplorerViewSelection()
+        // // pass in the suite with CloseWithoutSavingTest and
+        // // LockedModelExplorerTest executed before because of Bug 482122
+        // suite.addTestSuite(PropertyViewOnModelExplorerSelectionTests.class);
+        // suite.addTestSuite(ContextualMenuTest.class);
+        // suite.addTestSuite(BracketEdgeTests.class);
+        // suite.addTestSuite(EdgeCopyPasteFormatTest.class);
+        // suite.addTestSuite(BendpointsStabilityOnMovesTest.class);
+        // suite.addTestSuite(BendpointsStabilityOnMovesSpecificCasesTest.class);
+        // suite.addTestSuite(BorderedNodeCopyPasteFormatTest.class);
+        // suite.addTestSuite(ContainerAndNodeCopyPasteFormatTest.class);
+        // suite.addTestSuite(ContainerDefaultSizeLayoutTest.class);
+        // suite.addTestSuite(ModifyEdgeLayoutAfterRefreshTest.class);
         suite.addTest(TreeSwtbotTestSuite.suite());
-        suite.addTestSuite(CompletionProposalInVSMTest.class);
-        suite.addTestSuite(DirectEditWithInputLabelTest.class);
-        suite.addTestSuite(AdditionalLayerTest.class);
-        suite.addTestSuite(GroupingContentProviderTest.class);
-        suite.addTestSuite(GroupingContentProviderByContainingTest.class);
-        suite.addTestSuite(PaletteViewManagementTest.class);
-        suite.addTestSuite(PaletteManagerAfterVSMSelectionChange.class);
-        suite.addTestSuite(CreateRepresentationFromSessionTest.class);
-        suite.addTestSuite(ToolCreationPositionTest.class);
-        suite.addTestSuite(LocalSessionViewTest.class);
-        suite.addTestSuite(ShowTypeActionButtonTest.class);
-        suite.addTestSuite(ChildrenPositionStabilityAfterParentResizeTest.class);
-        suite.addTestSuite(VSMEditorPropertiesTest.class);
-        suite.addTestSuite(SessionEditorOpeningTests.class);
-        suite.addTestSuite(NoteAttachmentTest.class);
-
-        // Scenario test cases
-        suite.addTestSuite(ESEDemoTest.class);
-        suite.addTestSuite(ValidationTest.class);
-        suite.addTestSuite(ViewpointSelectionDialogTest.class);
-        suite.addTestSuite(InitializeEmptySessionTest.class);
-        suite.addTestSuite(InitializeSessionTest.class);
-        suite.addTestSuite(RepairTest.class);
-        suite.addTestSuite(ValidationEmptyNameTest.class);
-        suite.addTestSuite(ControlUncontrolWithOpenedRepresentationTest.class);
-        suite.addTestSuite(SiriusInternationalizationTest.class);
-        suite.addTestSuite(DecoratorTest.class);
-        suite.addTestSuite(LayoutOptionsTests.class);
+        // suite.addTestSuite(CompletionProposalInVSMTest.class);
+        // suite.addTestSuite(DirectEditWithInputLabelTest.class);
+        // suite.addTestSuite(AdditionalLayerTest.class);
+        // suite.addTestSuite(GroupingContentProviderTest.class);
+        // suite.addTestSuite(GroupingContentProviderByContainingTest.class);
+        // suite.addTestSuite(PaletteViewManagementTest.class);
+        // suite.addTestSuite(PaletteManagerAfterVSMSelectionChange.class);
+        // suite.addTestSuite(CreateRepresentationFromSessionTest.class);
+        // suite.addTestSuite(ToolCreationPositionTest.class);
+        // suite.addTestSuite(LocalSessionViewTest.class);
+        // suite.addTestSuite(ShowTypeActionButtonTest.class);
+        // suite.addTestSuite(ChildrenPositionStabilityAfterParentResizeTest.class);
+        // suite.addTestSuite(VSMEditorPropertiesTest.class);
+        // suite.addTestSuite(SessionEditorOpeningTests.class);
+        // suite.addTestSuite(NoteAttachmentTest.class);
+        //
+        // // Scenario test cases
+        // suite.addTestSuite(ESEDemoTest.class);
+        // suite.addTestSuite(ValidationTest.class);
+        // suite.addTestSuite(ViewpointSelectionDialogTest.class);
+        // suite.addTestSuite(InitializeEmptySessionTest.class);
+        // suite.addTestSuite(InitializeSessionTest.class);
+        // suite.addTestSuite(RepairTest.class);
+        // suite.addTestSuite(ValidationEmptyNameTest.class);
+        // suite.addTestSuite(ControlUncontrolWithOpenedRepresentationTest.class);
+        // suite.addTestSuite(SiriusInternationalizationTest.class);
+        // suite.addTestSuite(DecoratorTest.class);
+        // suite.addTestSuite(LayoutOptionsTests.class);
 
     }
 

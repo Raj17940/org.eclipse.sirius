@@ -12,26 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.tests.swtbot.suite;
 
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.sirius.tests.swtbot.tree.ConditionalTreeItemStyleDescriptionTest;
-import org.eclipse.sirius.tests.swtbot.tree.ContextMenuTreeTest;
-import org.eclipse.sirius.tests.swtbot.tree.CopyTreeRepresentationTest;
-import org.eclipse.sirius.tests.swtbot.tree.CreatedDTreeItemsSelectionTests;
-import org.eclipse.sirius.tests.swtbot.tree.DeleteSeveralElementOnTree;
 import org.eclipse.sirius.tests.swtbot.tree.DirectEditTreeItemTest;
-import org.eclipse.sirius.tests.swtbot.tree.DisplayLabelOnNodeTest;
-import org.eclipse.sirius.tests.swtbot.tree.NavigateInTreeRepresentationTest;
-import org.eclipse.sirius.tests.swtbot.tree.OpenCloseCreateDeleteTreeRepresentationTest;
-import org.eclipse.sirius.tests.swtbot.tree.RefreshWithPropertiesViewTest;
-import org.eclipse.sirius.tests.swtbot.tree.RenameTreeRepresentationTest;
-import org.eclipse.sirius.tests.swtbot.tree.TreeItemMappingTest;
-import org.eclipse.sirius.tests.swtbot.tree.TreeItemPopupMenusTest;
 import org.eclipse.sirius.tests.swtbot.tree.TreeItemPopupMenusWithJavaActionTest;
-import org.eclipse.sirius.tests.swtbot.tree.TreeItemStyleDescriptionTest;
-import org.eclipse.sirius.tests.swtbot.tree.TreeRefreshWithF5ShortcutTests;
-import org.eclipse.sirius.tests.swtbot.tree.TreeUIPermissionAuthorityTests;
-import org.eclipse.sirius.tests.swtbot.tree.TreeUIRefreshTests;
-import org.osgi.framework.Version;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -61,33 +44,33 @@ public class TreeSwtbotTestSuite extends TestCase {
      */
     public static Test suite() {
         final TestSuite suite = new TestSuite("Tree SWTBOT test suite");
-        suite.addTestSuite(CopyTreeRepresentationTest.class);
-        // Test to be executed only from Eclipse Mars because dependent of fix
-        // from Bug 460206
-        if (Platform.getBundle("org.eclipse.emf.transaction").getVersion().compareTo(Version.parseVersion("1.9.0")) >= 0) {
-            suite.addTestSuite(CreatedDTreeItemsSelectionTests.class);
-        }
-        suite.addTestSuite(OpenCloseCreateDeleteTreeRepresentationTest.class);
-        suite.addTestSuite(RenameTreeRepresentationTest.class);
-        suite.addTestSuite(NavigateInTreeRepresentationTest.class);
+        // suite.addTestSuite(CopyTreeRepresentationTest.class);
+        // // Test to be executed only from Eclipse Mars because dependent of fix
+        // // from Bug 460206
+        // if (Platform.getBundle("org.eclipse.emf.transaction").getVersion().compareTo(Version.parseVersion("1.9.0"))
+        // >= 0) {
+        // suite.addTestSuite(CreatedDTreeItemsSelectionTests.class);
+        // }
+        // suite.addTestSuite(OpenCloseCreateDeleteTreeRepresentationTest.class);
+        // suite.addTestSuite(RenameTreeRepresentationTest.class);
+        // suite.addTestSuite(NavigateInTreeRepresentationTest.class);
         suite.addTestSuite(DirectEditTreeItemTest.class);
         suite.addTestSuite(ConditionalTreeItemStyleDescriptionTest.class);
-        suite.addTestSuite(TreeItemStyleDescriptionTest.class);
-        suite.addTestSuite(TreeItemMappingTest.class);
-        suite.addTestSuite(TreeItemPopupMenusTest.class);
-        suite.addTestSuite(RefreshWithPropertiesViewTest.class);
-        suite.addTestSuite(DeleteSeveralElementOnTree.class);
-        suite.addTestSuite(ContextMenuTreeTest.class);
-        suite.addTestSuite(TreeUIPermissionAuthorityTests.class);
-        suite.addTestSuite(TreeUIRefreshTests.class);
-        suite.addTestSuite(TreeRefreshWithF5ShortcutTests.class);
-        suite.addTestSuite(DisplayLabelOnNodeTest.class);
+        // suite.addTestSuite(TreeItemStyleDescriptionTest.class);
+        // suite.addTestSuite(TreeItemMappingTest.class);
+        // suite.addTestSuite(TreeItemPopupMenusTest.class);
+        // suite.addTestSuite(RefreshWithPropertiesViewTest.class);
+        // suite.addTestSuite(DeleteSeveralElementOnTree.class);
+        // suite.addTestSuite(ContextMenuTreeTest.class);
+        // suite.addTestSuite(TreeUIPermissionAuthorityTests.class);
+        // suite.addTestSuite(TreeUIRefreshTests.class);
+        // suite.addTestSuite(TreeRefreshWithF5ShortcutTests.class);
+        // suite.addTestSuite(DisplayLabelOnNodeTest.class);
         return suite;
     }
 
     /**
-     * Creates the {@link junit.framework.TestSuite TestSuite} for all the
-     * disabled test.
+     * Creates the {@link junit.framework.TestSuite TestSuite} for all the disabled test.
      * 
      * @return The test suite containing all the disabled tests.
      */

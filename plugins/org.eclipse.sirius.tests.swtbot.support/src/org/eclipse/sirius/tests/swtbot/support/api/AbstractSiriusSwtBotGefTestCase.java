@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2018 THALES GLOBAL SERVICES and others.
+ * Copyright (c) 2009, 2019 THALES GLOBAL SERVICES and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -587,6 +587,18 @@ public abstract class AbstractSiriusSwtBotGefTestCase extends SWTBotGefTestCase 
     }
 
     /**
+     * Undo the command named cmdName with the menu Edit.
+     *
+     * @param cmdName
+     *            the command to undo
+     * @param swtBot
+     *            the bot from which undo will be done.
+     */
+    protected void undo(String cmdName, SWTBot swtBot) {
+        swtBot.menu(AbstractSiriusSwtBotGefTestCase.EDIT_MENU_NAME, 1).menu("Undo " + cmdName).click();
+    }
+
+    /**
      * Redo with shortcut CTRL+y, at the end of this method execution, the operation redo is finished.
      */
     protected void redo() {
@@ -614,6 +626,18 @@ public abstract class AbstractSiriusSwtBotGefTestCase extends SWTBotGefTestCase 
      */
     protected void redo(String cmdName) {
         bot.menu(AbstractSiriusSwtBotGefTestCase.EDIT_MENU_NAME).menu("Redo " + cmdName).click();
+    }
+
+    /**
+     * Redo the command named cmdName with the menu Edit.
+     *
+     * @param cmdName
+     *            the command to redo
+     * @param swtbot
+     *            the bot fom which the redo will be done.
+     */
+    protected void redo(String cmdName, SWTBot swtbot) {
+        swtbot.menu(AbstractSiriusSwtBotGefTestCase.EDIT_MENU_NAME, 1).menu("Redo " + cmdName).click();
     }
 
     /**

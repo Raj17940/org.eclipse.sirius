@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 THALES GLOBAL SERVICES.
+ * Copyright (c) 2017, 2019 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import org.eclipse.sirius.tests.swtbot.support.api.AbstractSiriusSwtBotGefTestCa
 import org.eclipse.sirius.tests.swtbot.support.utils.SWTBotUtils;
 import org.eclipse.sirius.viewpoint.provider.Messages;
 import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
+import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 
@@ -62,7 +63,8 @@ public class ExportDiagramAsImageFromCloseSessionTest extends AbstractSiriusSwtB
             SWTBotTreeItem representationsFile = tree.expandNode(getProjectName()).select(SESSION_MODEL_FILENAME);
             SWTBotUtils.clickContextMenu(representationsFile, Messages.ExportRepresentationsAction_label);
             bot.waitUntil(Conditions.shellIsActive(Messages.ExportSeveralRepresentationsAsImagesDialog_dialogTitle));
-            bot.button("OK").click();
+            SWTBot exportBot = bot.shell(Messages.ExportSeveralRepresentationsAsImagesDialog_dialogTitle).bot();
+            exportBot.button("OK").click();
             SWTBotUtils.waitAllUiEvents();
             // Ensure that one image file has been created.
             project.refreshLocal(IResource.DEPTH_ONE, new NullProgressMonitor());

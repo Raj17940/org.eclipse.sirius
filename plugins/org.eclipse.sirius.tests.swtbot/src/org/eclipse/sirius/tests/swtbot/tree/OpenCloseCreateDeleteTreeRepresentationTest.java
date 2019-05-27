@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2017 THALES GLOBAL SERVICES.
+ * Copyright (c) 2010, 2019 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ import org.eclipse.sirius.tests.swtbot.support.api.editor.SWTBotVSMEditor;
 import org.eclipse.sirius.tests.swtbot.support.api.editor.SWTBotVSMHelper;
 import org.eclipse.sirius.tests.swtbot.support.utils.SWTBotUtils;
 import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
+import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.junit.Test;
@@ -151,9 +152,10 @@ public class OpenCloseCreateDeleteTreeRepresentationTest extends AbstractTreeSir
      */
     private void createTree(SWTBotTreeItem treeItem) {
         SWTBotUtils.clickContextMenu(treeItem, "new Tree");
-
-        bot.activeShell().bot().text(0).setText(editor);
-        bot.button(OK).click();
+        bot.waitUntil(Conditions.shellIsActive("New Tree"));
+        SWTBot wizardBot = bot.shell("New Tree").bot();
+        wizardBot.text(0).setText(editor);
+        wizardBot.button(OK).click();
         // waiting for editor opening
         SWTBotSiriusHelper.getTreeDialectEditorBots(editor);
         treeItem = localSession.getLocalSessionBrowser().perSemantic().expandNode(P1).expandNode(editor).select();
@@ -208,7 +210,8 @@ public class OpenCloseCreateDeleteTreeRepresentationTest extends AbstractTreeSir
         treeItem = localSession.getLocalSessionBrowser().perSemantic().expandNode(P1).expandNode(editor).select();
         SWTBotUtils.clickContextMenu(treeItem, "Delete");
         bot.waitUntil(Conditions.shellIsActive("Delete representation"));
-        bot.button(OK).click();
+        SWTBot wizardBot = bot.shell("Delete representation").bot();
+        wizardBot.button(OK).click();
         try {
             treeItem = localSession.getLocalSessionBrowser().perSemantic().expandNode(P1).expandNode(editor).select();
             assertFalse("The DTree editor must be delete", true);
