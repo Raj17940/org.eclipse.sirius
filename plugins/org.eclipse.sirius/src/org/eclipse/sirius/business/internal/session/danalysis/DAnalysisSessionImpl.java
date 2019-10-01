@@ -25,6 +25,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.ListenerList;
@@ -410,6 +411,7 @@ public class DAnalysisSessionImpl extends DAnalysisSessionEObjectImpl implements
         this.interpreter.setProperty(IInterpreter.FILES, null);
         this.interpreter.setProperty(IInterpreter.FILES, filePaths);
         InterpreterRegistry.prepareImportsFromSession(this.interpreter, this);
+
     }
 
     // *******************

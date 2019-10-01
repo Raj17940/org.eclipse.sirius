@@ -82,7 +82,7 @@ public class AQLProposalProvider implements IProposalProvider {
     }
 
     private void setupInterpreter(ContentContext context, AQLSiriusInterpreter interpreter) {
-        Collection<MetamodelDescriptor> metamodels = new ArrayList<MetamodelDescriptor>();
+        Collection<MetamodelDescriptor> metamodels = new ArrayList<>();
         for (EPackage pak : context.getInterpreterContext().getAvailableEPackages()) {
             if (pak != null) {
                 metamodels.add(new EcoreMetamodelDescriptor(pak));
