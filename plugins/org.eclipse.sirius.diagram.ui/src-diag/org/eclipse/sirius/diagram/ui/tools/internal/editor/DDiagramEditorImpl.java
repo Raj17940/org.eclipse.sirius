@@ -479,7 +479,7 @@ public class DDiagramEditorImpl extends SiriusDiagramEditor implements DDiagramE
             if (getGraphicalViewer() != null) {
                 IWorkbenchPartSite site = getSite();
                 if (site != null) {
-                    IWorkbenchPage currentPage = site.getPage();
+                    IWorkbenchPage page = safeGetWorkbenchPage();
                     if (currentPage != null) {
                         currentPage.closeEditor(DDiagramEditorImpl.this, save);
                     }
@@ -487,6 +487,16 @@ public class DDiagramEditorImpl extends SiriusDiagramEditor implements DDiagramE
             }
         });
     }
+    }
+    
+    private IWorkbenchPage safeGetWorkbenchPage() {
+        if (!PlatformUI.getWorkbench().isClosing()) {
+            IWorkbenchPartSite site = getSite();
+            if (site != null) {
+                return site.getPage();
+            }
+        }
+        return null;
 
     /**
      * We have to take care of the case when Eclipse starts up with a session. and diagram already open. {@inheritDoc}
